@@ -7,7 +7,7 @@ Replace this with more appropriate tests for your application.
 from django.db import models
 
 from django.test import TestCase
-from ember_modeler.ko import to_ember
+from ember_modeler.modeler import to_ember, to_ember_model
 
 
 class SimpleTest(TestCase):
@@ -16,12 +16,13 @@ class SimpleTest(TestCase):
         Tests that a simple model is
         """
         class MyObject(models.Model):
-            myNumber = models.IntegerField()
-            myName = models.CharField()
+            my_number = models.IntegerField()
+            my_string = models.CharField()
 
-        ember_string = to_ember(MyObject)
+        ember_model_string = to_ember_model(MyObject)
 
-        self.assertEqual(ember_string,
-                         ("App.Recipe = DS.Model.extend({\n"
-                          "  title: DS.attr('string')\n"
+        self.assertEqual(ember_model_string,
+                         ("App.MyObject = DS.Model.extend({\n"
+                          "    my_number: DS.attr('number'),\n"
+                          "    my_string: DS.attr('string')\n"
                           "});"))

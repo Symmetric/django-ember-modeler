@@ -1,13 +1,11 @@
 from django import template
-import simplejson as json
-import datetime
 from knockout_modeler.ko import ko, koData, koModel, koBindings, get_fields
 
 register = template.Library()
 
-def knockout(values):
+def ember(values):
     """
-    Knockoutify a QuerySet!
+    Emberify a QuerySet!
     """
 
     if not values:
@@ -57,7 +55,7 @@ def knockout_bindings(values):
 
     return koBindings(values[0])
 
-register.filter(knockout)
+register.filter(ember)
 register.filter(knockout_data)
 register.filter(knockout_model)
 register.filter(knockout_bindings)

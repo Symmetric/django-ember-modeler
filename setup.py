@@ -7,17 +7,17 @@ README = open(os.path.join(os.path.dirname(__file__), 'README.md')).read()
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
-    name='django-knockout-modeler',
-    version='0.6.3',
-    packages=['knockout_modeler'],
-    install_requires=['simplejson'],
+    name='django-ember-modeler',
+    version='0.1.0',
+    packages=['ember_modeler'],
+    install_requires=['simplejson', 'django'],
     include_package_data=True,
     license='MIT License',
-    description='Super easy ModelViews for knockout.js for your Django models',
+    description='Super easy ModelViews for Ember.js for your Django models',
     long_description=README,
-    url='https://github.com/Miserlou/django-knockout-modeler',
-    author='Rich Jones',
-    author_email='rich@openwatch.net',
+    url='https://github.com/Symmetric/django-ember-modeler',
+    author='Paul Tiplady',
+    author_email='paultiplady@gmail.com',
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',

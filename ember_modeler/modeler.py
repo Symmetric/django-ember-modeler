@@ -3,25 +3,25 @@ import cgi
 import simplejson as json
 import datetime
 
-def get_fields(model):
 
+def get_fields(model):
     try:
-        if hasattr(model, "knockout_fields"):
-            fields = model.knockout_fields()
+        if hasattr(model, "ember_fields"):
+            fields = model.ember_fields()
         else:
             try:
                 fields = model.to_dict().keys()
-            except Exception, e:
+            except Exception as e:
                 fields = model._meta.get_all_field_names()
 
         return fields
 
     # Crash proofing
-    except Exception, e:
+    except Exception as e:
         return []
 
-def koModel(model, field_names=None, data=None):
 
+def to_ember_model(model, field_names=None, data=None):
     try:
         if type(model) == str:
             modelName = model
@@ -38,14 +38,14 @@ def koModel(model, field_names=None, data=None):
         else:
             comparator = 'id' 
 
-        modelViewString = render_to_string("knockout_modeler/model.html", {'modelName': modelName, 'fields': fields, 'data': data, 'comparator': comparator} )
+        modelViewString = render_to_string("ember_modeler/model.html", {'modelName': modelName, 'fields': fields, 'data': data, 'comparator': comparator} )
 
         return modelViewString
-    except Exception, e:
+    except Exception as e:
         return ''
 
-def koBindings(model):
 
+def to_ember_bindings(model):
     try:
         if type(model) == str:
             modelName = model
@@ -55,19 +55,19 @@ def koBindings(model):
         modelBindingsString = "ko.applyBindings(new " + modelName + "ViewModel(), $('#" + modelName.lower() + "s')[0]);"
         return modelBindingsString
 
-    except Exception, e:
+    except Exception as e:
         return ''
 
-def koData(queryset, field_names, name=None, safe=False):
 
+def to_ember_data(queryset, field_names=None, name=None, safe=False):
     try:
-        modelName = queryset[0].__class__.__name__    
+        modelName = queryset.model.__name__
         modelNameData = []
 
         if field_names:
             fields = field_names
         else:
-            fields = get_fields(model)
+            fields = get_fields(queryset)
 
         for obj in queryset:
             temp_dict = dict()
@@ -80,7 +80,7 @@ def koData(queryset, field_names, name=None, safe=False):
                             attribute = cgi.escape(attribute)
 
                     temp_dict[field] = attribute
-                except Exception, e:
+                except Exception as e:
                     continue
             modelNameData.append(temp_dict)
 
@@ -91,18 +91,18 @@ def koData(queryset, field_names, name=None, safe=False):
 
         dthandler = lambda obj: obj.isoformat() if isinstance(obj, datetime.datetime)  or isinstance(obj, datetime.date) else None
         return "var " + modelNameString + " = " + json.dumps(modelNameData, default=dthandler) + ';'
-    except Exception, e:
+    except Exception as e:
         return ''
 
-def ko(queryset, field_names):
 
+def to_ember(queryset, field_names=None):
     try:
-        koDataString = koData(queryset, field_names)
-        koModelString = koModel(queryset[0].__class__.__name__, field_names, data=True)
-        koBindingsString = koBindings(queryset[0])
+        ember_data_string = to_ember_data(queryset, field_names)
+        ember_model_string = to_ember_model(queryset[0].__class__.__name__, field_names, data=True)
+        ember_bindings_string = to_ember_bindings(queryset[0])
 
-        koString = koDataString + '\n' + koModelString + '\n' + koBindingsString
+        ember_string = ember_data_string + '\n' + ember_model_string + '\n' + ember_bindings_string
 
-        return koString
-    except Exception, e:
+        return ember_string
+    except Exception as e:
         return ''

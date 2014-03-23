@@ -1,8 +1,5 @@
-from django.db.models.fields import AutoField, CharField, IntegerField, TextField
+from django.db.models.fields import AutoField, CharField, IntegerField, TextField, FloatField, DateField, BooleanField
 from django.template.loader import render_to_string
-import cgi
-import simplejson as json
-import datetime
 
 
 def get_fields(model):
@@ -25,10 +22,14 @@ def get_fields(model):
 def get_field_type(model, field_name):
     field = model._meta.get_field_by_name(field_name)[0]
 
-    if isinstance(field, AutoField) or isinstance(field, IntegerField):
+    if (isinstance(field, AutoField) or
+            isinstance(field, IntegerField) or
+            isinstance(field, FloatField)):
         return 'number'
-    elif isinstance(field, CharField) or isinstance(field, TextField):
-        return 'string'
+    elif isinstance(field, DateField):
+        return 'date'
+    elif isinstance(field, BooleanField):
+        return 'bool'
     else:
         return 'string'
 
@@ -38,7 +39,7 @@ def to_ember_model(model, field_names=None, app_name='App', id_='id'):
         # if type(model) == str:
         #     model_name = model
         # else:
-        model_name = model.__name__
+        model_name = model.__class__.__name__
 
         if field_names:
             fields = field_names
@@ -104,10 +105,10 @@ def to_ember(queryset, field_names=None, app_name='App', fixture=False):
     try:
         # ember_data_string = to_ember_data(queryset, field_names)
         ember_string = to_ember_model(queryset.model, field_names, app_name=app_name)
-        if fixture:
-            ember_string += '\n' + to_ember_fixture(queryset,
-                                                    field_names=field_names,
-                                                    app_name=app_name)
+        # if fixture:
+        #     ember_string += '\n' + to_ember_fixture(queryset,
+        #                                             field_names=field_names,
+        #                                             app_name=app_name)
 
         return ember_string
     except Exception as e:

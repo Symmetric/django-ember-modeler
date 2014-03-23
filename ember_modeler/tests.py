@@ -19,7 +19,7 @@ class SimpleTest(TestCase):
             my_number = models.IntegerField()
             my_string = models.CharField()
 
-        ember_model_string = to_ember_model(MyObject)
+        ember_model_string = to_ember_model(MyObject())
 
         self.assertEqual(ember_model_string,
                          ("App.MyObject = DS.Model.extend({\n"

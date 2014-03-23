@@ -10,7 +10,7 @@ setup(
     name='django-ember-modeler',
     version='0.1.0',
     packages=['ember_modeler'],
-    install_requires=['simplejson', 'django'],
+    install_requires=['django'],
     include_package_data=True,
     license='MIT License',
     description='Super easy ModelViews for Ember.js for your Django models',

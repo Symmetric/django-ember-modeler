@@ -60,7 +60,7 @@ def to_ember_model(model, field_names=None, app_name='App', id_='id'):
         return ''
 
 
-def to_ember(queryset, field_names=None, app_name='App', fixture=False):
+def to_ember(queryset, field_names=None, app_name='App'):
     try:
         ember_string = to_ember_model(queryset.model, field_names, app_name=app_name)
         return ember_string

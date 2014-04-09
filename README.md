@@ -1,11 +1,14 @@
-![Django knockout!](http://i.imgur.com/Nf7Vxq6.gif)
-
-django-knockout-modeler
+django-ember-modeler
 ==============
 
-**django-knockout-modeler** makes it super easy to use knockout.js with your Django models. It's great for project with objects that have lots of different models, or models with lots of different fields, or both. It can be used in both prototyping complex applications and directly in the templates of simple ones.
+**django-ember-modeler** makes it super easy to use knockout.js with your Django models.
+It's great for project with objects that have lots of different models,
+or models with lots of different fields, or both.
+It can be used in both prototyping complex applications and directly in the templates of simple ones.
 
-**django-knockout-modeler** turns this:
+It's cloned from [django-knockout-modeller](https://github.com/Miserlou/django-knockout-modeler).
+
+**django-ember-modeler** turns this:
 
 ```python
 class MyObject(models.Model):
@@ -20,7 +23,7 @@ into this:
 ```javascript
 var MyObjectData = [{   
     "myNumber": 666,
-    "myName": "Gabe Newell"
+    "myName": "Bob McChobb"
 }];
 
 function MyObject(data) {
@@ -62,18 +65,18 @@ with just this!
 Quick start
 ------------
 
-0. Install django-knockout-modeler
+0. Install django-ember-modeler
 
     ```python
-    pip install django-knockout-modeler
+    pip install git+git://git@github.com/symmetric/django-ember-modeler
     ```
 
-1. Add 'knockout-modeler' to your INSTALLED_APPS setting like this:
+1. Add 'ember_modeler' to your INSTALLED_APPS setting like this:
 
     ```python
     INSTALLED_APPS = (
       ...
-      'knockout_modeler',
+      'ember_modeler',
     )
     ```
 
@@ -114,7 +117,7 @@ Quick start
 Simple Usage
 ---------
 
-**django-knockout-modeler** can be used directly in templates to generate knockout models and knockout-ready data, or either one you choose. To put a QuerySet directly into a django template as a Knockout object, you can do this:
+**django-ember-modeler** can be used directly in templates to generate knockout models and knockout-ready data, or either one you choose. To put a QuerySet directly into a django template as a Knockout object, you can do this:
 
 ```django
 {{ myObjects | knockout }}
@@ -144,7 +147,7 @@ Progammatic Usage
 First, import it!
 
 ```python
-from knockout_modeler.ko import ko, koData, koModel
+from ember_modeler.ko import ko, koData, koModel
 ```
 
 To get the whole template, you can do this:
